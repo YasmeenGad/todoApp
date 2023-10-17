@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:todo/screens/auth/signUp.dart';
+import 'package:todo/screens/auth/login.dart';
 import 'package:todo/shared/components/components.dart';
 
-class Login extends StatelessWidget {
-  Login({super.key});
+class SignUp extends StatelessWidget {
+  SignUp({super.key});
   GlobalKey<FormState> formKey = GlobalKey();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  static const String routeName = "/login";
+  TextEditingController username = TextEditingController();
+  static const String routeName = "/signup";
   RxBool isObsecure = true.obs;
   @override
   Widget build(BuildContext context) {
@@ -35,14 +36,14 @@ class Login extends StatelessWidget {
               height: 30.h,
             ),
             Text(
-              "Login",
+              "SignUp",
               style: TextStyle(
                   fontSize: 40.sp,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
             Text(
-              "Login to continue using app",
+              "Enter your personal information",
               style: TextStyle(fontSize: 18.sp, color: Colors.black54),
             ),
             SizedBox(
@@ -53,6 +54,42 @@ class Login extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      "UserName",
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextFormField(
+                      validator: (val) {
+                        return validateUsername(val!);
+                      },
+                      controller: username,
+                      cursorColor: Colors.grey.withOpacity(0.3),
+                      style: TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "username",
+                        filled: true,
+                        fillColor: Colors.grey.withOpacity(0.3),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black12),
+                            borderRadius: BorderRadius.circular(30)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black12),
+                            borderRadius: BorderRadius.circular(30)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black12),
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Text(
                       "Email",
                       style: TextStyle(
@@ -134,23 +171,10 @@ class Login extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Text(
-                        "Forget password?",
-                        style: TextStyle(
-                            fontSize: 18.sp,
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ),
                   ],
                 )),
             SizedBox(
-              height: 20.h,
+              height: 30.h,
             ),
             InkWell(
               onTap: () {
@@ -168,54 +192,11 @@ class Login extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    "Login",
+                    "SignUp",
                     style: TextStyle(fontSize: 22.sp, color: Colors.white),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 15.h,
-            ),
-            Center(
-              child: Text(
-                "Or Login With",
-                style: TextStyle(fontSize: 18.sp, color: Colors.black54),
-              ),
-            ),
-            SizedBox(
-              height: 15.h,
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: Container(
-                  width: 60.w,
-                  height: 60.h,
-                  child: Image.asset(
-                    "assets/images/facebook.png",
-                  ),
-                )),
-                Expanded(
-                    child: Container(
-                  width: 60.w,
-                  height: 60.h,
-                  child: Image.asset(
-                    "assets/images/google.png",
-                    width: 60.w,
-                    height: 60.h,
-                  ),
-                )),
-                Expanded(
-                    child: Container(
-                  width: 60.w,
-                  child: Image.asset(
-                    "assets/images/apple.png",
-                    width: 60.w,
-                    height: 60.h,
-                  ),
-                )),
-              ],
             ),
             SizedBox(
               height: 30.h,
@@ -224,15 +205,15 @@ class Login extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Don't have an account?",
+                  "Already have an account?",
                   style: TextStyle(fontSize: 18.sp, color: Colors.black),
                 ),
                 InkWell(
                   onTap: () {
-                    Get.offNamed(SignUp.routeName);
+                    Get.offNamed(Login.routeName);
                   },
                   child: Text(
-                    "SignUp",
+                    "Login",
                     style: TextStyle(fontSize: 20.sp, color: Colors.blue),
                   ),
                 ),

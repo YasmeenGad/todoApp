@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:todo/layout/home_layout.dart';
 import 'package:todo/localization/locale.dart';
 import 'package:todo/screens/auth/login.dart';
+import 'package:todo/screens/auth/signUp.dart';
 import 'package:todo/screens/edit_task.dart';
 import 'package:todo/shared/styles/theming.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
             GetPage(name: HomeLayout.routeName, page: () => HomeLayout()),
             GetPage(name: EditTask.routeName, page: () => EditTask()),
             GetPage(name: Login.routeName, page: () => Login()),
+            GetPage(name: SignUp.routeName, page: () => SignUp()),
           ],
         );
       },
