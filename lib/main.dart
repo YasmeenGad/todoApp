@@ -5,8 +5,14 @@ import 'package:todo/layout/home_layout.dart';
 import 'package:todo/localization/locale.dart';
 import 'package:todo/screens/edit_task.dart';
 import 'package:todo/shared/styles/theming.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
