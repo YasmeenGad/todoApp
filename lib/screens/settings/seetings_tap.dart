@@ -5,7 +5,7 @@ import 'package:todo/shared/styles/colors.dart';
 import 'package:todo/shared/styles/theming.dart';
 
 class SettingsTap extends StatelessWidget {
-  RxBool isSwitched = false.obs;
+  RxBool isDark = false.obs;
   RxBool istranslated = false.obs;
 
   @override
@@ -86,13 +86,11 @@ class SettingsTap extends StatelessWidget {
                   ),
                   trailing: Obx(
                     () => Switch(
-                        value: isSwitched.value,
+                        value: isDark.value,
                         onChanged: (val) {
-                          isSwitched.value = val;
-                          if (isSwitched == true) {
-                            if (!Get.isDarkMode) {
-                              Get.changeTheme(MyThemeData.customdarkTheme);
-                            }
+                          isDark.value = val;
+                          if (isDark == true) {
+                            Get.changeTheme(MyThemeData.customdarkTheme);
                           } else {
                             Get.changeTheme(MyThemeData.customlightTheme);
                           }

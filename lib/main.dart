@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:todo/layout/home_layout.dart';
 import 'package:todo/localization/locale.dart';
+import 'package:todo/screens/auth/login.dart';
 import 'package:todo/screens/edit_task.dart';
 import 'package:todo/shared/styles/theming.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,12 +29,15 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           locale: Locale("en"),
           translations: LocaleLang(),
-          theme: MyThemeData.customlightTheme,
+          theme: Get.isDarkMode
+              ? MyThemeData.customdarkTheme
+              : MyThemeData.customlightTheme,
           debugShowCheckedModeBanner: false,
-          initialRoute: HomeLayout.routeName,
+          initialRoute: Login.routeName,
           getPages: [
             GetPage(name: HomeLayout.routeName, page: () => HomeLayout()),
             GetPage(name: EditTask.routeName, page: () => EditTask()),
+            GetPage(name: Login.routeName, page: () => Login()),
           ],
         );
       },
