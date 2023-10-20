@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import 'package:todo/screens/auth/login.dart';
 import 'package:todo/shared/components/components.dart';
+import 'package:todo/shared/network/remote/create_account.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   SignUp({super.key});
-  GlobalKey<FormState> formKey = GlobalKey();
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController username = TextEditingController();
   static const String routeName = "/signup";
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  GlobalKey<FormState> formKey = GlobalKey();
+
+  TextEditingController email = TextEditingController();
+
+  TextEditingController password = TextEditingController();
+
+  TextEditingController username = TextEditingController();
+
   RxBool isObsecure = true.obs;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,6 +152,7 @@ class SignUp extends StatelessWidget {
                     ),
                     Obx(
                       () => TextFormField(
+                        controller: password,
                         validator: (val) {
                           return validatePassword(val!);
                         },
@@ -177,10 +191,10 @@ class SignUp extends StatelessWidget {
               height: 30.h,
             ),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 if (formKey.currentState!.validate()) {
-                  debugPrint(
-                      "------------------------valid-----------------------");
+                  CreateAccount(
+                      username.text, email.text, password.text, context);
                 }
               },
               child: Container(

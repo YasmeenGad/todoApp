@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -34,7 +35,10 @@ class MyApp extends StatelessWidget {
               ? MyThemeData.customdarkTheme
               : MyThemeData.customlightTheme,
           debugShowCheckedModeBanner: false,
-          initialRoute: Login.routeName,
+          initialRoute: (FirebaseAuth.instance.currentUser != null &&
+                  FirebaseAuth.instance.currentUser!.emailVerified)
+              ? HomeLayout.routeName
+              : Login.routeName,
           getPages: [
             GetPage(name: HomeLayout.routeName, page: () => HomeLayout()),
             GetPage(name: EditTask.routeName, page: () => EditTask()),

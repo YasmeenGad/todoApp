@@ -1,12 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:todo/screens/auth/login.dart';
 import 'package:todo/shared/styles/colors.dart';
 import 'package:todo/shared/styles/theming.dart';
 
 class SettingsTap extends StatelessWidget {
   RxBool isDark = false.obs;
   RxBool istranslated = false.obs;
+  RxBool isSignOut = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +34,7 @@ class SettingsTap extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: 75.h,
+            height: 50.h,
           ),
           Container(
             padding: EdgeInsets.symmetric(
@@ -155,6 +159,28 @@ class SettingsTap extends StatelessWidget {
                           }
                         }),
                   )),
+              Divider(
+                thickness: 1,
+                color: primaryColor,
+                endIndent: 50,
+                indent: 50,
+              ),
+              ListTile(
+                  title: Text(
+                    "18".tr,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: primaryColor),
+                  ),
+                  trailing: IconButton(
+                      onPressed: () {
+                        GoogleSignIn googleSignIn = GoogleSignIn();
+                        googleSignIn.disconnect();
+                        FirebaseAuth.instance.signOut();
+                        Get.offAllNamed(Login.routeName);
+                      },
+                      icon: Icon(Icons.logout, size: 28.sp))),
             ]),
           )
         ],

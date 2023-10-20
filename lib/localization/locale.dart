@@ -21,7 +21,8 @@ class LocaleLang implements Translations {
         "14": "ادخل مهمتك",
         "15": "حفظ المهمه",
         "16": "الاعدادات",
-        "17": "المهمه الاولى"
+        "17": "المهمه الاولى",
+        "18": "تسجيل الخروج",
       },
       "en": {
         "1": "To Do List",
@@ -40,7 +41,8 @@ class LocaleLang implements Translations {
         "14": "Enter your task",
         "15": "Add Task",
         "16": "settings",
-        "17": "First task"
+        "17": "First task",
+        "18": "Sign Out",
       },
     };
   }
