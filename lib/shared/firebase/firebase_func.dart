@@ -29,4 +29,8 @@ class FirebaseFunctions {
             isEqualTo: DateUtils.dateOnly(dateTime).millisecondsSinceEpoch)
         .snapshots();
   }
+
+  static deleteTasks(String id) {
+    getTaskCollection().doc(id).delete();
+  }
 }

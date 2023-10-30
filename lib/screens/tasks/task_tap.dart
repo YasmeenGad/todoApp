@@ -104,7 +104,9 @@ class _TaskTapState extends State<TaskTap> {
                           startActionPane:
                               ActionPane(motion: DrawerMotion(), children: [
                             SlidableAction(
-                              onPressed: (context) {},
+                              onPressed: (context) {
+                                FirebaseFunctions.deleteTasks(tasks[index].id!);
+                              },
                               label: "Delete",
                               icon: Icons.delete,
                               backgroundColor: Colors.red,
