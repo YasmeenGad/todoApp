@@ -35,8 +35,7 @@ class MyApp extends StatelessWidget {
               ? MyThemeData.customdarkTheme
               : MyThemeData.customlightTheme,
           debugShowCheckedModeBanner: false,
-          initialRoute: (FirebaseAuth.instance.currentUser != null &&
-                  FirebaseAuth.instance.currentUser!.emailVerified)
+          initialRoute: (FirebaseAuth.instance.currentUser != null)
               ? HomeLayout.routeName
               : Login.routeName,
           getPages: [

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo/layout/home_layout.dart';
 import 'package:todo/screens/auth/login.dart';
 
 CreateAccount(String username, String email, String password, context) async {
@@ -13,7 +14,7 @@ CreateAccount(String username, String email, String password, context) async {
     await credential.user!.updateDisplayName(username);
 
     FirebaseAuth.instance.currentUser!.sendEmailVerification();
-    Get.offAllNamed(Login.routeName);
+    Get.offAllNamed(HomeLayout.routeName);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
       showDialog(

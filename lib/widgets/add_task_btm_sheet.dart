@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:todo/models/task_model.dart';
+import 'package:todo/shared/firebase/firebase_func.dart';
 
 import 'package:todo/shared/styles/colors.dart';
 
@@ -10,7 +12,8 @@ class AddTaskBtmSheet extends StatefulWidget {
 }
 
 class _AddTaskBtmSheetState extends State<AddTaskBtmSheet> {
-  TextEditingController task = TextEditingController();
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  TextEditingController title = TextEditingController();
   DateTime selectedDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -34,9 +37,22 @@ class _AddTaskBtmSheetState extends State<AddTaskBtmSheet> {
           SizedBox(
             height: 25.h,
           ),
-          TextFormField(
-            controller: task,
-            decoration: InputDecoration(hintText: "14".tr),
+          Form(
+            key: formkey,
+            child: TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "please enter title task";
+                } else {
+                  return null;
+                }
+              },
+              style: TextStyle(color: Colors.black),
+              controller: title,
+              decoration: InputDecoration(
+                hintText: "14".tr,
+              ),
+            ),
           ),
           SizedBox(
             height: 25.h,
@@ -85,7 +101,16 @@ class _AddTaskBtmSheetState extends State<AddTaskBtmSheet> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             color: primaryColor,
-            onPressed: () {},
+            onPressed: () {
+              if (formkey.currentState!.validate()) {
+                TaskModel taskModel = TaskModel(
+                    title: title.text,
+                    date: DateUtils.dateOnly(selectedDate)
+                        .millisecondsSinceEpoch);
+                FirebaseFunctions.addTask(taskModel);
+                Navigator.pop(context);
+              }
+            },
             child: Text(
               "15".tr,
               style: Theme.of(context)
