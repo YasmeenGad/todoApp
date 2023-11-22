@@ -15,6 +15,8 @@ class _AddTaskBtmSheetState extends State<AddTaskBtmSheet> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController title = TextEditingController();
   DateTime selectedDate = DateTime.now();
+  TimeOfDay time = TimeOfDay.now();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -97,6 +99,42 @@ class _AddTaskBtmSheetState extends State<AddTaskBtmSheet> {
           SizedBox(
             height: 25.h,
           ),
+          Row(
+            children: [
+              Text(
+                "19".tr,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Get.isDarkMode ? lightColor : blackColor,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 25.h,
+          ),
+          InkWell(
+            onTap: () async{
+            TimeOfDay? newTime=await  showTimePicker(context: context, initialTime: time);
+            if(selectedTime==null) return;
+            else {
+              setState(() {
+                time=newTime!;
+              });
+            }
+            },
+            child: Text(
+              "${time.hour}:${time.minute}",
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: selectedTime),
+            ),
+          ),
+          SizedBox(
+            height: 25.h,
+          ),
           MaterialButton(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -104,6 +142,7 @@ class _AddTaskBtmSheetState extends State<AddTaskBtmSheet> {
             onPressed: () {
               if (formkey.currentState!.validate()) {
                 TaskModel taskModel = TaskModel(
+                  time: time.toString(),
                     title: title.text,
                     date: DateUtils.dateOnly(selectedDate)
                         .millisecondsSinceEpoch);

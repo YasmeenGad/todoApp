@@ -15,7 +15,7 @@ class LocaleLang implements Translations {
         "8": "ترجمة إلى اللغة العربية",
         "9": "تعديل المهمه",
         "10": "صحح مهمتك",
-        "11": "تعيين الوقت",
+        "11": "تعيين التاريخ",
         "12": "حفظ التغيرات",
         "13": "اضافة مهمه جديده",
         "14": "ادخل مهمتك",
@@ -23,6 +23,7 @@ class LocaleLang implements Translations {
         "16": "الاعدادات",
         "17": "المهمه الاولى",
         "18": "تسجيل الخروج",
+        "19":"تعيين الوقت",
       },
       "en": {
         "1": "To Do List",
@@ -35,7 +36,7 @@ class LocaleLang implements Translations {
         "8": "translate to arabic",
         "9": "Edit Task",
         "10": "Edit your task",
-        "11": "Select Time",
+        "11": "Select date",
         "12": "Save Changes",
         "13": "Add New Task",
         "14": "Enter your task",
@@ -43,6 +44,7 @@ class LocaleLang implements Translations {
         "16": "settings",
         "17": "First task",
         "18": "Sign Out",
+        "19":"Select Time"
       },
     };
   }

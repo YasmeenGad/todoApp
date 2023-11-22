@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:todo/layout/home_layout.dart';
-
+import 'package:todo/models/task_model.dart';
+import 'package:todo/shared/firebase/firebase_func.dart';
 import 'package:todo/shared/styles/colors.dart';
 
 class EditTask extends StatefulWidget {
   static const String routeName = "/editTask";
+  TaskModel? taskModel;
+  EditTask({this.taskModel});
 
   @override
   State<EditTask> createState() => _EditTaskState();
@@ -16,6 +19,21 @@ class _EditTaskState extends State<EditTask> {
   TextEditingController task = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
+  TimeOfDay time = TimeOfDay.now();
+  @override
+  void initState() {
+    task.text = widget.taskModel!.title!;
+    selectedDate = DateTime.fromMillisecondsSinceEpoch(widget.taskModel!.date!);
+
+    // Extract hour and minute values from the time string using a regular expression
+    final timeRegExp = RegExp(r'(\d+):(\d+)');
+    final match = timeRegExp.firstMatch(widget.taskModel!.time!);
+    final hour = int.parse(match!.group(1)!);
+    final minute = int.parse(match.group(2)!);
+    time = TimeOfDay(hour: hour, minute: minute);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +107,12 @@ class _EditTaskState extends State<EditTask> {
                             height: 25.h,
                           ),
                           TextFormField(
+                            style: TextStyle(color: primaryColor),
                             controller: task,
-                            decoration: InputDecoration(hintText: "10".tr),
+                            decoration: InputDecoration(
+                                hintText: "10".tr,
+                                suffixIcon: Icon(Icons.edit_note_outlined,
+                                    color: primaryColor)),
                           ),
                           SizedBox(
                             height: 25.h,
@@ -125,12 +147,12 @@ class _EditTaskState extends State<EditTask> {
                               if (choosenDate == null) {
                                 return;
                               } else {
-                                selectedDate = choosenDate;
+                                selectedDate = DateUtils.dateOnly(choosenDate);
                                 setState(() {});
                               }
                             },
                             child: Text(
-                              "${selectedDate}".substring(0, 10),
+                              "${selectedDate}".toString().substring(0, 10),
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
@@ -140,13 +162,65 @@ class _EditTaskState extends State<EditTask> {
                             ),
                           ),
                           SizedBox(
+                            height: 25.h,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "19".tr,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        color: Get.isDarkMode
+                                            ? lightColor
+                                            : blackColor,
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 25.h,
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              TimeOfDay? newTime = await showTimePicker(
+                                  context: context, initialTime: time);
+                              if (selectedTime == null)
+                                return;
+                              else {
+                                setState(() {
+                                  time = newTime!;
+                                });
+                              }
+                            },
+                            child: Text(
+                              "${time.hour}:${time.minute}",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(color: selectedTime),
+                            ),
+                          ),
+                          SizedBox(
                             height: 100.h,
                           ),
                           MaterialButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25)),
                             color: primaryColor,
-                            onPressed: () {},
+                            onPressed: () {
+                              TaskModel taskModel = TaskModel(
+                                  time: time.toString(),
+                                  title: task.text,
+                                  date: DateUtils.dateOnly(selectedDate)
+                                      .millisecondsSinceEpoch,
+                                  id: widget.taskModel!.id,
+                                  isDone: widget.taskModel!.isDone);
+                              FirebaseFunctions.updateTask(taskModel);
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(15),
                               child: Text(

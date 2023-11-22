@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo/layout/home_layout.dart';
+import 'package:todo/shared/firebase/firebase_func.dart';
 // signIn function
 
 SignIn(String email, String password, context) async {
@@ -10,8 +11,10 @@ SignIn(String email, String password, context) async {
         .signInWithEmailAndPassword(email: email, password: password);
 
     if (credential.user!.emailVerified) {
+      FirebaseFunctions.readUserFromFireStore(credential.user!.uid);
       Get.snackbar("Congrates!", "you have signned in successfully",
           backgroundColor: Colors.white);
+
       Get.offAllNamed(HomeLayout.routeName);
     } else {
       showDialog(

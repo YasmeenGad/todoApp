@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:todo/layout/home_layout.dart';
 import 'package:todo/screens/auth/signUp.dart';
 import 'package:todo/shared/components/components.dart';
 import 'package:todo/shared/network/remote/signIn_fun.dart';

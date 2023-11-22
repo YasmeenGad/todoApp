@@ -18,14 +18,21 @@ class TaskTap extends StatefulWidget {
 
 class _TaskTapState extends State<TaskTap> {
   late DateTime selectedDate;
+  late TimeOfDay selectedTime;
+
   void _resetSelectedDate() {
     selectedDate = DateTime.now();
+  }
+
+  void _resetSelectedTime() {
+    selectedTime = TimeOfDay.now();
   }
 
   @override
   void initState() {
     super.initState();
     _resetSelectedDate();
+    _resetSelectedTime();
   }
 
   @override
@@ -93,97 +100,137 @@ class _TaskTapState extends State<TaskTap> {
               List<TaskModel> tasks =
                   snapshot.data?.docs.map((e) => e.data()).toList() ?? [];
               return Expanded(
-                child: ListView.builder(
-                    itemCount: tasks.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setHeight(16),
-                            horizontal: ScreenUtil().setWidth(16)),
-                        child: Slidable(
-                          startActionPane:
-                              ActionPane(motion: DrawerMotion(), children: [
-                            SlidableAction(
-                              onPressed: (context) {
-                                FirebaseFunctions.deleteTasks(tasks[index].id!);
-                              },
-                              label: "Delete",
-                              icon: Icons.delete,
-                              backgroundColor: Colors.red,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10)),
-                            ),
-                            SlidableAction(
-                              onPressed: (context) {
-                                Get.toNamed(EditTask.routeName);
-                              },
-                              label: "Edit",
-                              icon: Icons.edit,
-                              backgroundColor: Colors.blue,
-                            )
-                          ]),
-                          child: Container(
-                            width: 352.w,
-                            height: 115.h,
-                            decoration: BoxDecoration(
-                              color: Get.isDarkMode ? bgNavdark : lightColor,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: ScreenUtil().setHeight(8),
-                                  horizontal: ScreenUtil().setWidth(13)),
-                              child: Row(children: [
-                                Container(
-                                  width: 4.w,
-                                  height: 62.h,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                                Expanded(
-                                  child: ListTile(
-                                    title: Row(
-                                      children: [
-                                        Text(tasks[index].title!,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 18.w),
+                  child: ListView.builder(
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setHeight(16),
+                              horizontal: ScreenUtil().setWidth(16)),
+                          child: Slidable(
+                            startActionPane:
+                                ActionPane(motion: DrawerMotion(), children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  FirebaseFunctions.deleteTasks(
+                                      tasks[index].id!);
+                                },
+                                label: "Delete",
+                                icon: Icons.delete,
+                                backgroundColor: Colors.red,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10)),
+                              ),
+                              SlidableAction(
+                                onPressed: (context) {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return EditTask(
+                                          taskModel: TaskModel(
+                                              time: tasks[index].time,
+                                              title: tasks[index].title,
+                                              date: tasks[index].date,
+                                              id: tasks[index].id,
+                                              isDone: tasks[index].isDone));
+                                    },
+                                  ));
+                                },
+                                label: "Edit",
+                                icon: Icons.edit,
+                                backgroundColor: Colors.blue,
+                              )
+                            ]),
+                            child: Container(
+                              width: 352.w,
+                              // height: 115.h,
+                              decoration: BoxDecoration(
+                                color: Get.isDarkMode ? bgNavdark : lightColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: ScreenUtil().setHeight(8),
+                                    horizontal: ScreenUtil().setWidth(13)),
+                                child: Row(children: [
+                                  Container(
+                                    width: 4.w,
+                                    height: 62.h,
+                                    decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                      title: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(tasks[index].title!,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium),
+                                          ),
+                                        ],
+                                      ),
+                                      subtitle: Row(
+                                        children: [
+                                          Icon(CupertinoIcons.clock,
+                                              color: Colors.grey, size: 18.sp),
+                                          SizedBox(width: 8.w),
+                                          Text(
+                                            "${tasks[index].time}"
+                                                .substring(10, 15),
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyMedium),
-                                      ],
-                                    ),
-                                    subtitle: Row(children: [
-                                      Icon(CupertinoIcons.clock, size: 20.sp),
-                                      SizedBox(
-                                        width: 6.w,
+                                                .bodyMedium!
+                                                .copyWith(color: Colors.grey),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        "${selectedDate}".substring(0, 10),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      )
-                                    ]),
-                                    trailing: MaterialButton(
-                                      color: primaryColor,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      onPressed: () {},
-                                      child: Icon(
-                                        Icons.check_outlined,
-                                        size: 25.sp,
-                                        color: lightColor,
-                                      ),
+                                      trailing: tasks[index].isDone!
+                                          ? Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 12.h,
+                                                  horizontal: 12.w),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: Text(
+                                                "Done",
+                                                style: TextStyle(
+                                                    color: lightColor),
+                                              ))
+                                          : MaterialButton(
+                                              color: primaryColor,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              onPressed: () {
+                                                tasks[index].isDone = true;
+                                                FirebaseFunctions.updateTask(
+                                                    tasks[index]);
+                                              },
+                                              child: Icon(
+                                                Icons.check_outlined,
+                                                size: 25.sp,
+                                                color: lightColor,
+                                              ),
+                                            ),
                                     ),
-                                  ),
-                                )
-                              ]),
+                                  )
+                                ]),
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
               );
             }))
       ],

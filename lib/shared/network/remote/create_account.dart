@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo/layout/home_layout.dart';
-import 'package:todo/screens/auth/login.dart';
+import 'package:todo/models/user_model.dart';
+import 'package:todo/shared/firebase/firebase_func.dart';
 
 CreateAccount(String username, String email, String password, context) async {
   try {
@@ -11,7 +12,11 @@ CreateAccount(String username, String email, String password, context) async {
       email: email,
       password: password,
     );
+
     await credential.user!.updateDisplayName(username);
+    UserModel userModel =
+        UserModel(id: credential.user!.uid, email: email, name: username);
+    FirebaseFunctions.addUserToFireStore(userModel);
 
     FirebaseAuth.instance.currentUser!.sendEmailVerification();
     Get.offAllNamed(HomeLayout.routeName);
