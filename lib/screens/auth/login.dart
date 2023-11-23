@@ -6,8 +6,11 @@ import 'package:todo/shared/components/components.dart';
 import 'package:todo/shared/network/remote/signIn_fun.dart';
 import 'package:todo/shared/network/remote/sign_in_with_google_func.dart';
 
+import '../../layout/home_layout.dart';
+
 class Login extends StatefulWidget {
   Login({super.key});
+
   static const String routeName = "/login";
 
   @override
@@ -215,6 +218,10 @@ class _LoginState extends State<Login> {
                       setState(() {
                         isLoading = false;
                       });
+                      Get.offAllNamed(HomeLayout.routeName);
+                      Get.snackbar("Congrates",
+                          "you have signned in with google successfully!",
+                          backgroundColor: Colors.white);
                     },
                     child: Container(
                       width: double.infinity,

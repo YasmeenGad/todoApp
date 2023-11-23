@@ -200,16 +200,16 @@ class _SignUpState extends State<SignUp> {
                   ),
                   InkWell(
                     onTap: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
                       if (formKey.currentState!.validate()) {
+                        setState(() {
+                          isLoading = true;
+                        });
                         CreateAccount(
                             username.text, email.text, password.text, context);
+                        setState(() {
+                          isLoading = false;
+                        });
                       }
-                      setState(() {
-                        isLoading = false;
-                      });
                     },
                     child: Container(
                       width: double.infinity,

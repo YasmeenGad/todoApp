@@ -220,6 +220,7 @@ class _EditTaskState extends State<EditTask> {
                                   id: widget.taskModel!.id,
                                   isDone: widget.taskModel!.isDone);
                               FirebaseFunctions.updateTask(taskModel);
+                              Navigator.pop(context);
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(15),

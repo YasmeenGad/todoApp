@@ -49,7 +49,8 @@ class _AddTaskBtmSheetState extends State<AddTaskBtmSheet> {
                   return null;
                 }
               },
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                  color: Get.isDarkMode ? Colors.white : Colors.black),
               controller: title,
               decoration: InputDecoration(
                 hintText: "14".tr,
